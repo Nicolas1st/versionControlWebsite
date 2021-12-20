@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block maincontent %}
+
+    <div class="container">
+
+        <div class="page-header">
+            <h1> {{session['username']}}'s {{ pagename }}</h1>
+        </div>
+
+        <ul class="nav nav-pills">
+            {% if pagename == 'Profile' %}
+                <li class="active"><a href="{{url_for('profile')}}"> Account Info </a></li>
+                <li><a href="{{url_for('projects')}}"> My Projects </a></li>
+                <li><a href="{{url_for('contributions')}}"> Contributions </a></li>
+            {% elif pagename == 'Projects' %}
+                <li><a href="{{url_for('profile')}}"> Account Info </a></li>
+                <li class="active"><a href="{{url_for('projects')}}"> My Projects </a></li>
+                <li><a href="{{url_for('contributions')}}"> Contributions </a></li>
+            {% else %}
+                <li><a href="{{url_for('profile')}}"> Account Info </a></li>
+                <li><a href="{{url_for('projects')}}"> My Projects </a></li>
+                <li class="active"><a href="{{url_for('contributions')}}"> Contributions </a></li>
+            {% endif %}
+
+            {% block tabs %}
+            {% endblock tabs %}
+
+        </ul>
+
+        <div class="padding-top">
+            {% block items %} {% endblock items %}
+        </div>
+
+    </div>
+
+
+{% endblock maincontent %}

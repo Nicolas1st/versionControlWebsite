@@ -1,0 +1,4 @@
+export version_control_database_user=
+export version_control_database_user_password=
+export version_control_database_host=
+export version_control_database_name=
