@@ -2,12 +2,16 @@
 {% block maincontent %}
 
     <div class="container small-middle-container">
-        <h1 class=""> Change Name </h1>
+        <h1 class=""> Create New Project </h1>
         <form class="form-group" method="POST" action="">
             {{ form.csrf_token() }}
             <div class="form-group">
                 {{ form.name.label }}
                 {{ form.name(class="form-control") }}
+            </div>
+            <div class="form-group">
+                {{ form.description.label }}
+                {{ form.description(class="form-control") }}
             </div>
             <div class="form-group">
                 {{ form.submit(class="btn btn-primary")}}

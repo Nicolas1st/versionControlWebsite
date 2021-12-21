@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% block maincontent %}
+
+    {% set project_name = project_name %}
+
+    <div class="container">
+
+        <div class="page-header">
+            <h1> {{session['username']}}/{{ project_name }} </h1>
+        </div>
+
+        <div>
+            {% if user_can_make_changes %}
+                <a href="{{url_for('create_new_project')}}" class="btn btn-success btn-lg"> Make New Commit </a>
+                <a href="{{url_for('create_new_project')}}" class="btn btn-success btn-lg"> Remove File </a>
+            {% endif %}
+            <a href="{{url_for('create_new_project')}}" class="btn btn-success btn-lg"> Report Issue </a>
+        </div>
+
+        <ul class="nav nav-pills padding-top">
+            {% if pagename == 'Files' %}
+                <li class="active"><a href="{{url_for('project', project_name=project_name)}}"> Files </a></li>
+                <li><a href="{{url_for('project_commits', project_name=project_name)}}"> Commits </a></li>
+                <li><a href="{{url_for('project_participants', project_name=project_name)}}"> Participants </a></li>
+                <li><a href="{{url_for('project_issues', project_name=project_name)}}"> Issues </a></li>
+            {% elif pagename == 'Commits' %}
+                <li><a href="{{url_for('project', project_name=project_name)}}"> Files </a></li>
+                <li class="active"><a href="{{url_for('project_commits', project_name=project_name)}}"> Commits </a></li>
+                <li><a href="{{url_for('project_participants', project_name=project_name)}}"> Participants </a></li>
+                <li><a href="{{url_for('project_issues', project_name=project_name)}}"> Issues </a></li>
+            {% elif pagename == 'Participants' %}
+                <li><a href="{{url_for('project', project_name=project_name)}}"> Files </a></li>
+                <li><a href="{{url_for('project_commits', project_name=project_name)}}"> Commits </a></li>
+                <li class="active"><a href="{{url_for('project_participants', project_name=project_name)}}"> Participants </a></li>
+                <li><a href="{{url_for('project_issues', project_name=project_name)}}"> Issues </a></li>
+            {% else %}
+                <li><a href="{{url_for('project', project_name=project_name)}}"> Files </a></li>
+                <li><a href="{{url_for('project_commits', project_name=project_name)}}"> Commits </a></li>
+                <li><a href="{{url_for('project_participants', project_name=project_name)}}"> Participants </a></li>
+                <li class="active"><a href="{{url_for('project_issues', project_name=project_name)}}"> Issues </a></li>
+            {% endif %}
+
+            {% block tabs %}
+            {% endblock tabs %}
+
+        </ul>
+
+        <div class="padding-top">
+            {% block items %} {% endblock items %}
+        </div>
+
+    </div>
+
+{% endblock maincontent %}

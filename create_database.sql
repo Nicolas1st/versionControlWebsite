@@ -9,7 +9,7 @@ CREATE TABLE `Users` (
 
 CREATE TABLE `Projects` (
 	`id` INT NOT NULL AUTO_INCREMENT,
-	`name` VARCHAR(255) NOT NULL,
+	`name` VARCHAR(255) NOT NULL UNIQUE,
 	`description` VARCHAR(255),
 	`owner_id` INT NOT NULL,
 	FOREIGN KEY (`owner_id`)

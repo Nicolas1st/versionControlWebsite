@@ -1,0 +1,31 @@
+{% extends "project_page_base.html" %}
+
+{% block items %}
+    <div class="padding-top">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <span class="badge pull-right custom-badge"><a href="{{url_for('change_name')}}"> Change Name </a></span>
+                <h3 class="panel-title"> Name </h3>
+            </div>
+            <div class="panel-body">
+                
+            </div>
+        </div>
+
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <span class="badge pull-right custom-badge"><a href="{{url_for('change_email')}}"> Change Email </a></span>
+                <h3 class="panel-title"> Email </h3>
+            </div>
+            <div class="panel-body">
+            </div>
+        </div>
+
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <span class="badge pull-right custom-badge"><a href="{{url_for('change_password')}}"> Change Password </a></span>
+                <h3 class="panel-title"> Password </h3>
+            </div>
+        </div>
+    </div>
+{% endblock items %}

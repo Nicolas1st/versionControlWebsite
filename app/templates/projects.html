@@ -1,10 +1,13 @@
 {% extends "profile_base.html"%}
 {% block items %} 
+    <div>
+        <a href="{{url_for('create_new_project')}}" class="btn btn-success btn-lg"> Create New </a>
+    </div>
     <div class="padding-top">
         {% for name, description in projects %}
             <div class="panel panel-primary">
                 <div class="panel-heading">
-                    <h3 class="panel-title"> {{ name }} </h3>
+                    <h3 class="panel-title"> <a href="{{url_for('project', project_name=name)}}"> {{ name }} </a> </h3>
                 </div>
                 <div class="panel-body">
                     {{ description }}
