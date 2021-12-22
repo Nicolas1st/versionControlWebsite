@@ -19,22 +19,22 @@
 
         <ul class="nav nav-pills padding-top">
             {% if pagename == 'Files' %}
-                <li class="active"><a href="{{url_for('project', project_name=project_name)}}"> Files </a></li>
+                <li class="active"><a href="{{url_for('project_files', project_name=project_name)}}"> Files </a></li>
                 <li><a href="{{url_for('project_commits', project_name=project_name)}}"> Commits </a></li>
                 <li><a href="{{url_for('project_participants', project_name=project_name)}}"> Participants </a></li>
                 <li><a href="{{url_for('project_issues', project_name=project_name)}}"> Issues </a></li>
             {% elif pagename == 'Commits' %}
-                <li><a href="{{url_for('project', project_name=project_name)}}"> Files </a></li>
+                <li><a href="{{url_for('project_files', project_name=project_name)}}"> Files </a></li>
                 <li class="active"><a href="{{url_for('project_commits', project_name=project_name)}}"> Commits </a></li>
                 <li><a href="{{url_for('project_participants', project_name=project_name)}}"> Participants </a></li>
                 <li><a href="{{url_for('project_issues', project_name=project_name)}}"> Issues </a></li>
             {% elif pagename == 'Participants' %}
-                <li><a href="{{url_for('project', project_name=project_name)}}"> Files </a></li>
+                <li><a href="{{url_for('project_files', project_name=project_name)}}"> Files </a></li>
                 <li><a href="{{url_for('project_commits', project_name=project_name)}}"> Commits </a></li>
                 <li class="active"><a href="{{url_for('project_participants', project_name=project_name)}}"> Participants </a></li>
                 <li><a href="{{url_for('project_issues', project_name=project_name)}}"> Issues </a></li>
             {% else %}
-                <li><a href="{{url_for('project', project_name=project_name)}}"> Files </a></li>
+                <li><a href="{{url_for('project_files', project_name=project_name)}}"> Files </a></li>
                 <li><a href="{{url_for('project_commits', project_name=project_name)}}"> Commits </a></li>
                 <li><a href="{{url_for('project_participants', project_name=project_name)}}"> Participants </a></li>
                 <li class="active"><a href="{{url_for('project_issues', project_name=project_name)}}"> Issues </a></li>

@@ -83,7 +83,8 @@ def signup():
 @app.route('/profile/')
 def profile():
     if 'username' in session:
-        user = sql.select(db, 'Users', columns=['name', 'email'], condition=f"name='{session['username']}'")[0]
+        user = tables.Users.select(columns=['name', 'email'],
+                                   condition=f"name='{session['username']}'")[0]
         return render_template('profile.html', pagename='Profile', user=user)
     return redirect(url_for('login'))
 
@@ -198,8 +199,8 @@ def check_user_has_privelleges_to_make_changes_to_project(username, project_name
     return False
 
 
-@app.route('/projects/<string:project_name>/', methods=['GET', 'POST'])
-def project(project_name):
+@app.route('/projects/<string:project_name>/files/', methods=['GET', 'POST'])
+def project_files(project_name):
 
     """
     check whether the project is public
