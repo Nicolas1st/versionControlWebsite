@@ -1,3 +1,4 @@
+from flask_sqlalchemy.model import camel_to_snake_case
 from app import app, db, bcrypt, tables
 from flask import request, render_template, session, redirect, url_for, flash
 from app import forms
@@ -27,10 +28,10 @@ def login():
                     session['username'] = form.name.data
                     return redirect(url_for('profile'))
                 else:
-                    flash("Wrong password")
+                    flash("Wrong password", category='error')
             
             else:
-                flash("User with this name does not exist")
+                flash("User with this name does not exist", category='error')
 
     return render_template('login.html', form=form)
 
@@ -65,7 +66,7 @@ def signup():
 
             if messages:
                 for m in messages:
-                    flash(m)
+                    flash(m, category='error')
                 return render_template("signup.html", form=form)
 
             tables.Users.insert(columns=['name', 'email', 'hashed_password'],
@@ -73,7 +74,7 @@ def signup():
                                 request.form['email'],
                                 bcrypt.generate_password_hash(request.form['password']).decode('utf-8')])
             
-            flash('You have successfully signed up')
+            flash('You have successfully signed up', category='success')
 
             return redirect(url_for('login'))
 
@@ -144,26 +145,42 @@ def create_new_project():
                                           condition=f"name='{form.name.data}'")
         
         if projects:
-            flash('Projects with this name already exists, please choose another')
+            flash('Projects with this name already exists, please choose another', category='error')
             return render_template('create_new_project.html', form=form)
         else:
             owner_id = tables.Users.select(columns=['id'],
                                            condition=f"name='{session['username']}'")[0]['id']
             tables.Projects.insert(columns=['name', 'description', 'owner_id'],
                                   values=[form.name.data, form.description.data, owner_id])
-            flash(f'Created project {form.name.data}')
-            return redirect(url_for('projects'))
+            flash(f'Created project {form.name.data}', category='success')
+            return redirect(url_for('project_files', project_name=form.name.data))
 
     return render_template('create_new_project.html', form=form)
 
 
-@app.route('/profile/remove-project/<string:project>/')
-def remove_project():
-    pass
+@app.route('/profile/remove-project/<string:project_name>/')
+def remove_project(project_name):
 
+    if 'username' not in session:
+        return redirect(url_for('login'))
+
+    user_id = tables.Users.select(columns=['id'],
+                                  condition=f"name='{session['username']}'")[0]['id']
+    
+    project_owner_id = tables.Project(columns=['owner_id'],
+                                      condition=f"name='{project_name}'")[0]['name']
+    
+    if project_owner_id == user_id:
+        tables.Projects.delete(condition=f"name='{project_name}'")
+        flash(f"The project '{project_name}' has been removed", category='success')
+    else:
+        flash('You have no permission to remove this project, only the owner of the project can do this', category='error')
+
+    return redirect(url_for('projects'))
+    
 
 @app.route('/projects/<string:project_name>/upload-files', methods=['POST'])
-def upload_files():
+def make_commit():
     # figure out whether the user is a participant of the project
     # then upload the files and create a new commit
     pass
@@ -181,7 +198,7 @@ def check_user_has_privelleges_to_make_changes_to_project(username, project_name
     if project_info:
         project_id = project_info[0]['id']
     else:
-        flash('The project with the name provided does not exist')
+        flash('The project with the name provided does not exist', category='error')
         return redirect(url_for('profile'))
 
     project_owner_id = project_info[0]['owner_id']
@@ -251,21 +268,21 @@ def change_name():
                 return render_template('change_name.html', form=form)
 
             if form.name.data == session['username']:
-                flash("You already have the name '{form.name.data}'")
+                flash("You already have the name '{form.name.data}'", category='error')
                 return render_template('change_name.html', form=form)
 
             users = tables.Users.select(columns=['name'],
                                         condition=f"name='{form.name.data}'")
             
             if len(users) > 0:
-                flash('The name is already occupied')
+                flash('The name is already occupied', category='error')
                 return render_template('change_name.html', form=form)
 
             tables.Users.update(columns=['name'],
                                 values=[form.name.data],
                                 condition=f"name='{session['username']}'")
             session['username'] = form.name.data
-            flash("The name has been succesfully changed")
+            flash('The name has been succesfully changed', category='success')
             return redirect(url_for('profile'))
 
         return render_template('change_name.html', form=form)
@@ -286,7 +303,7 @@ def change_email():
                                         condition=f"name='{session['username']}'")
 
             if form.email.data == users[0]['email']:
-                flash("You already have the email '{form.email.data}'")
+                flash("You already have the email '{form.email.data}'", category='error')
                 return render_template('change_email.html', form=form)
 
             # check whether the emails has been occupied by other user
@@ -294,14 +311,14 @@ def change_email():
                                          condition=f"email='{form.email.data}'")
 
             if emails:
-                flash('The email is already occupied')
+                flash('The email is already occupied', category='error')
                 return render_template('change_email.html', form=form)
 
             tables.Users.update(columns=['email'],
                                 values=[form.email.data],
                                 condition=f"name='{session['username']}'")
 
-            flash("The email has been succesfully changed")
+            flash("The email has been succesfully changed", category='success')
             return redirect(url_for('profile'))
 
         return render_template('change_email.html', form=form)
@@ -322,9 +339,9 @@ def change_password():
             if form.validate_on_submit():
                 tables.Users.update(columns=['hashed_password'],
                                     values=[bcrypt.generate_password_hash(form.password.data).decode('utf-8')])
-                flash("The password has been updated")
+                flash('The password has been updated', category='success')
                 return redirect(url_for('profile'))
-            flash("The passwords do not match")
+            flash('The passwords do not match', category='success')
         return render_template('change_password.html', form=form)
     return redirect(url_for('login'))
 

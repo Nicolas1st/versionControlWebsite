@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 from sqlalchemy.sql.expression import text
-from wtforms import StringField, SubmitField, PasswordField, EmailField
+from wtforms import StringField, SubmitField, PasswordField, EmailField, SelectField
 from wtforms.validators import DataRequired, Length, EqualTo
 
 
@@ -46,3 +46,8 @@ class CreateProjectForm(FlaskForm):
     name = StringField(label=('Name:'), validators=[DataRequired(), Length(min=5)])
     description = StringField(label=('Description:'))
     submit = SubmitField(label=('Submit'))
+
+
+class RemoveProjectConfirmationForm(FlaskForm): 
+    answer = SelectField('School year', choices=['yes', 'no'])
+    submit = SubmitField('submit')
