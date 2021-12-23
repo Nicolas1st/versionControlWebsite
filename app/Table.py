@@ -8,7 +8,7 @@ class Table:
         self.database = database
         self.table_name = table_name
         self.field_types = self.get_field_types()
-
+    
 
     def select(self, columns: list, condition=None):
 

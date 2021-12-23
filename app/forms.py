@@ -1,6 +1,7 @@
 from flask_wtf import FlaskForm
-from sqlalchemy.sql.expression import text
+from flask_wtf.file import FileField
 from wtforms import StringField, SubmitField, PasswordField, EmailField, SelectField
+from wtforms.fields.simple import MultipleFileField
 from wtforms.validators import DataRequired, Length, EqualTo
 
 
@@ -49,5 +50,31 @@ class CreateProjectForm(FlaskForm):
 
 
 class RemoveProjectConfirmationForm(FlaskForm): 
-    answer = SelectField('School year', choices=['yes', 'no'])
-    submit = SubmitField('submit')
+
+    answer = SelectField(label=('Remove?'), choices=['yes', 'no'])
+    submit = SubmitField(label=('submit'))
+
+
+class AddParticipantForm(FlaskForm):
+
+    name = StringField(label=('Name:'), validators=[DataRequired(), Length(min=5)])
+    submit = SubmitField(label=('Submit'))
+
+
+class RemoveParticipantForm(FlaskForm):
+
+    name = StringField(label=('Name:'), validators=[DataRequired(), Length(min=5)])
+    submit = SubmitField(label=('Submit'))
+
+
+class AddProjectIssuesForm(FlaskForm):
+
+    name = StringField(label=('Name:'), validators=[DataRequired(), Length(min=5)])
+    description = StringField(label=('Description:'), validators=[DataRequired(), Length(min=5)])
+    submit = SubmitField(label=('Submit'))
+
+
+class NewCommitForm(FlaskForm):
+
+    files = FileField('Choose files for a new commit')
+    submit = SubmitField(label=('Submit'))

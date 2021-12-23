@@ -2,30 +2,15 @@
 
 {% block items %}
     <div class="padding-top">
-        <div class="panel panel-primary">
-            <div class="panel-heading">
-                <span class="badge pull-right custom-badge"><a href="{{url_for('change_name')}}"> Change Name </a></span>
-                <h3 class="panel-title"> Name </h3>
+        {% for file_name in file_names %}
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <span class="badge pull-right custom-badge">
+                        <a href="{{url_for('see_file_contents', project_name=project_name, commit_number=commit_name, file_name=file_name)}}"> See Source </a>
+                    </span>
+                    <h3 class="panel-title"> {{ file_name }} </h3>
+                </div>
             </div>
-            <div class="panel-body">
-                
-            </div>
-        </div>
-
-        <div class="panel panel-primary">
-            <div class="panel-heading">
-                <span class="badge pull-right custom-badge"><a href="{{url_for('change_email')}}"> Change Email </a></span>
-                <h3 class="panel-title"> Email </h3>
-            </div>
-            <div class="panel-body">
-            </div>
-        </div>
-
-        <div class="panel panel-primary">
-            <div class="panel-heading">
-                <span class="badge pull-right custom-badge"><a href="{{url_for('change_password')}}"> Change Password </a></span>
-                <h3 class="panel-title"> Password </h3>
-            </div>
-        </div>
+        {% endfor %}
     </div>
 {% endblock items %}

@@ -7,6 +7,7 @@
         {% for name, description in projects %}
             <div class="panel panel-primary">
                 <div class="panel-heading">
+                    <span class="badge pull-right custom-badge"><a href="{{url_for('remove_project', project_name=name)}}"> Remove </a></span>
                     <h3 class="panel-title"> <a href="{{url_for('project_files', project_name=name)}}"> {{ name }} </a> </h3>
                 </div>
                 <div class="panel-body">

@@ -20,13 +20,13 @@ CREATE TABLE `Projects` (
 
 
 CREATE TABLE `Commits` (
-	`id` INT NOT NULL AUTO_INCREMENT,
+    `name` VARCHAR(255) NOT NULL,
 	`project_id` INT NOT NULL,
 	`timestamp` TIMESTAMP NOT NULL DEFAULT NOW(),
 	FOREIGN KEY (`project_id`)
 		REFERENCES `Projects` (`id`)
 		ON DELETE CASCADE,
-	PRIMARY KEY (`id`)
+	PRIMARY KEY (`name`)
 );
 
 
@@ -35,23 +35,12 @@ CREATE TABLE `Files` (
 	`name` VARCHAR(255) NOT NULL,
 	`file` BLOB NOT NULL,
 	`project_id` INT NOT NULL,
+    `commit_name` VARCHAR(255) NOT NULL,
 	FOREIGN KEY (`project_id`)
 		REFERENCES `Projects` (`id`)
 		ON DELETE CASCADE,
-	PRIMARY KEY (`id`)
-);
-
-
-CREATE TABLE `Changes` (
-	`id` INT NOT NULL AUTO_INCREMENT,
-	`type` VARCHAR(255) NOT NULL,
-	`commit_id` INT NOT NULL,
-	`file_id` INT NOT NULL,
-	FOREIGN KEY (`commit_id`)
-		REFERENCES `Commits` (`id`)
-		ON DELETE CASCADE,
-	FOREIGN KEY (`file_id`)
-		REFERENCES `Files` (`id`)
+	FOREIGN KEY (`commit_name`)
+		REFERENCES `Commits` (`name`)
 		ON DELETE CASCADE,
 	PRIMARY KEY (`id`)
 );
@@ -81,3 +70,7 @@ CREATE TABLE `Issues` (
 		ON DELETE CASCADE,
 	PRIMARY KEY (`id`)
 );
+
+
+ALTER TABLE `Participants` 
+  ADD CONSTRAINT `constraint` UNIQUE(`project_id`, `user_id`);
